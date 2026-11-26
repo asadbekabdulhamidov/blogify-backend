@@ -11,7 +11,7 @@ const postSchema = new mongoose.Schema(
     image: { type: String, default: "" }, // rasm havolasi (URL)
     status: { type: String, enum: ["Published", "Draft"], default: "Published" },
     views: { type: Number, default: 0 },
-    author: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
+    author: { type: String, default: "Admin" },
   },
   { timestamps: true } // createdAt = post sanasi
 );

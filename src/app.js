@@ -13,6 +13,9 @@ app.get("/", (req, res) => res.json({ message: "Blogify API ishlayapti 🚀", do
 // Swagger hujjati bazaga ulanmasdan ham ochiladi
 app.use("/api", require("./swagger"));
 
+// Login bazaga ulanmaydi
+app.use("/api/auth", require("./routes/auth"));
+
 // Har bir so'rovdan oldin bazaga ulanamiz
 app.use(async (req, res, next) => {
   try {
@@ -23,7 +26,6 @@ app.use(async (req, res, next) => {
   }
 });
 
-app.use("/api/auth", require("./routes/auth"));
 app.use("/api/posts", require("./routes/posts"));
 app.use("/api/categories", require("./routes/categories"));
 app.use("/api/stats", require("./routes/stats"));

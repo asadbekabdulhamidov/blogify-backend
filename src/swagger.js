@@ -19,7 +19,7 @@ const Post = {
     _id: { type: "string" },
     ...postBody.properties,
     views: { type: "number" },
-    author: { type: "object", properties: { _id: { type: "string" }, name: { type: "string" } } },
+    author: { type: "string", example: "Admin" },
     createdAt: { type: "string", format: "date-time" },
     updatedAt: { type: "string", format: "date-time" },
   },
@@ -27,18 +27,7 @@ const Post = {
 
 const AuthResponse = {
   type: "object",
-  properties: {
-    token: { type: "string" },
-    user: {
-      type: "object",
-      properties: {
-        id: { type: "string" },
-        name: { type: "string" },
-        email: { type: "string" },
-        role: { type: "string", enum: ["user", "admin"] },
-      },
-    },
-  },
+  properties: { token: { type: "string" } },
 };
 
 const json = (schema) => ({ content: { "application/json": { schema } } });
@@ -55,7 +44,7 @@ const spec = {
   },
   servers: [{ url: "/" }],
   tags: [
-    { name: "Auth", description: "Ro'yxatdan o'tish va kirish" },
+    { name: "Auth", description: "Admin login" },
     { name: "Posts", description: "Postlar" },
     { name: "Categories" },
     { name: "Stats", description: "Admin Dashboard" },
@@ -65,43 +54,19 @@ const spec = {
     schemas: { Post, PostInput: postBody, AuthResponse },
   },
   paths: {
-    "/api/auth/register": {
-      post: {
-        tags: ["Auth"],
-        summary: "Ro'yxatdan o'tish (Sign up)",
-        requestBody: json({
-          type: "object",
-          required: ["name", "email", "password"],
-          properties: {
-            name: { type: "string", example: "Asadbek" },
-            email: { type: "string", example: "asadbek@mail.uz" },
-            password: { type: "string", example: "123456" },
-          },
-        }),
-        responses: { 201: { description: "Yaratildi", ...json({ $ref: "#/components/schemas/AuthResponse" }) }, 400: { description: "Xato ma'lumot" } },
-      },
-    },
     "/api/auth/login": {
       post: {
         tags: ["Auth"],
         summary: "Kirish (Login)",
         requestBody: json({
           type: "object",
-          required: ["email", "password"],
+          required: ["login", "password"],
           properties: {
-            email: { type: "string", example: "admin@blogify.uz" },
+            login: { type: "string", example: "admin" },
             password: { type: "string", example: "admin123" },
           },
         }),
-        responses: { 200: { description: "OK", ...json({ $ref: "#/components/schemas/AuthResponse" }) }, 401: { description: "Email yoki parol noto'g'ri" } },
-      },
-    },
-    "/api/auth/me": {
-      get: {
-        tags: ["Auth"],
-        summary: "🔒 Hozirgi foydalanuvchi",
-        security: secured,
-        responses: { 200: { description: "OK" }, 401: { description: "Token yo'q" } },
+        responses: { 200: { description: "OK", ...json({ $ref: "#/components/schemas/AuthResponse" }) }, 401: { description: "Login yoki parol noto'g'ri" } },
       },
     },
     "/api/posts": {
@@ -200,7 +165,6 @@ const spec = {
                 published: { type: "integer" },
                 drafts: { type: "integer" },
                 totalViews: { type: "integer" },
-                activeUsers: { type: "integer" },
                 recentPosts: { type: "array", items: { $ref: "#/components/schemas/Post" } },
               },
             }),

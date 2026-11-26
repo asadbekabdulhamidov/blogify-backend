@@ -28,8 +28,7 @@ router.get("/", optionalAuth, async (req, res) => {
       .sort({ createdAt: -1 })
       .skip((page - 1) * limit)
       .limit(limit)
-      .select("-content") // ro'yxatda to'liq matn shart emas
-      .populate("author", "name"),
+      .select("-content"), // ro'yxatda to'liq matn shart emas
     Post.countDocuments(filter),
   ]);
 
@@ -45,7 +44,7 @@ router.get("/:id", async (req, res) => {
     req.params.id,
     { $inc: { views: 1 } },
     { new: true }
-  ).populate("author", "name");
+  );
 
   if (!post) return res.status(404).json({ message: "Post topilmadi" });
 
@@ -76,7 +75,6 @@ router.post("/", protect, adminOnly, async (req, res) => {
       category,
       image,
       status,
-      author: req.user.id,
     });
     res.status(201).json(post);
   } catch (err) {

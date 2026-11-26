@@ -17,7 +17,7 @@ blogify-back/
     ├── db.js             ← MongoDB'ga ulanish
     ├── swagger.js        ← Swagger hujjati (/api/docs)
     ├── middleware/auth.js← token tekshirish, admin tekshirish
-    ├── models/           ← User, Post
+    ├── models/           ← Post
     └── routes/           ← auth, posts, categories, stats
 ```
 
@@ -30,7 +30,7 @@ blogify-back/
 
 ```bash
 npm install
-npm run seed   # 10 ta namunaviy post + admin (admin@blogify.uz / admin123)
+npm run seed   # 10 ta namunaviy post
 npm run dev    # http://localhost:5000
 ```
 
@@ -38,7 +38,7 @@ npm run dev    # http://localhost:5000
 
 1. Loyihani GitHub'ga yuklang (`.env` yuklanmaydi — `.gitignore`da bor).
 2. [vercel.com](https://vercel.com) → **Add New → Project** → repozitoriyni tanlang.
-3. **Environment Variables** bo'limiga `MONGODB_URI` va `JWT_SECRET` ni qo'shing.
+3. **Environment Variables** bo'limiga `MONGODB_URI`, `JWT_SECRET`, `ADMIN_LOGIN`, `ADMIN_PASSWORD` ni qo'shing.
 4. **Deploy** tugmasini bosing. Tayyor: `https://sizning-loyiha.vercel.app/api/posts`
 
 ## API yo'llari
@@ -50,16 +50,14 @@ U yerda har bir yo'lni sinab ko'rish mumkin. Token kerak bo'lsa, login qilib oli
 
 | Metod | Yo'l | Nima qiladi | Dizayndagi joyi |
 |---|---|---|---|
-| POST | `/api/auth/register` | Ro'yxatdan o'tish `{name, email, password}` | Sign up |
-| POST | `/api/auth/login` | Kirish `{email, password}` → `token` | Login |
-| GET | `/api/auth/me` 🔒 | Hozirgi foydalanuvchi | Navbar (Logout) |
+| POST | `/api/auth/login` | Kirish `{login, password}` → `{ token }` | Login |
 | GET | `/api/posts` | Postlar ro'yxati | Home, Posts |
 | GET | `/api/posts/:id` | Bitta post + `related` (3 ta) | Post sahifasi |
 | POST | `/api/posts` 🔒👑 | Yangi post | Create Post |
 | PUT | `/api/posts/:id` 🔒👑 | Postni tahrirlash | Edit |
 | DELETE | `/api/posts/:id` 🔒👑 | Postni o'chirish | Delete |
 | GET | `/api/categories` | Kategoriyalar va soni | Categories tablari |
-| GET | `/api/stats` 🔒👑 | Total Posts, Total Views, Active Users | Admin Dashboard |
+| GET | `/api/stats` 🔒👑 | Total Posts, Total Views, Published/Draft | Admin Dashboard |
 
 **`/api/posts` parametrlari:** `?search=web&category=Design&page=1&limit=9`
 (`category=all` — hammasi). Admin token bilan so'rasa Draft postlar ham keladi (`?status=Draft`).
@@ -67,7 +65,8 @@ U yerda har bir yo'lni sinab ko'rish mumkin. Token kerak bo'lsa, login qilib oli
 **Post maydonlari:** `title`, `excerpt`, `content`, `category` (Technology | Productivity | Design),
 `image` (rasm URL), `status` (Published | Draft). `views` va sana (`createdAt`) avtomatik.
 
-> 💡 Birinchi ro'yxatdan o'tgan foydalanuvchi avtomatik **admin** bo'ladi.
+> 💡 Loyihada bitta admin bor. Login va parol `.env` dagi `ADMIN_LOGIN` / `ADMIN_PASSWORD` (berilmasa `admin` / `admin123`).
+> Ro'yxatdan o'tish yo'q. Logout uchun frontendda tokenni `localStorage`dan o'chirish kifoya.
 
 > 💡 Rasm: Vercel fayl saqlamaydi, shuning uchun `image` maydoniga tayyor rasm havolasi (URL) yoziladi.
 > Frontendda rasmni Cloudinary yoki ImgBB'ga yuklab, havolasini yuborish mumkin.
@@ -81,7 +80,7 @@ const API = "https://sizning-loyiha.vercel.app";
 const res = await fetch(`${API}/api/auth/login`, {
   method: "POST",
   headers: { "Content-Type": "application/json" },
-  body: JSON.stringify({ email: "admin@blogify.uz", password: "admin123" }),
+  body: JSON.stringify({ login: "admin", password: "admin123" }),
 });
 const { token } = await res.json();
 localStorage.setItem("token", token);
