@@ -1,16 +1,13 @@
 const router = require("express").Router();
-const Post = require("../models/Post");
+const store = require("../store");
 
 // GET /api/categories  — kategoriyalar va har biridagi postlar soni
-router.get("/", async (req, res) => {
-  const counts = await Post.aggregate([
-    { $match: { status: "Published" } },
-    { $group: { _id: "$category", count: { $sum: 1 } } },
-  ]);
+router.get("/", (req, res) => {
+  const published = store.getAll().filter((p) => p.status === "Published");
 
-  const result = Post.CATEGORIES.map((name) => ({
+  const result = store.CATEGORIES.map((name) => ({
     name,
-    count: counts.find((c) => c._id === name)?.count || 0,
+    count: published.filter((p) => p.category === name).length,
   }));
 
   res.json(result);

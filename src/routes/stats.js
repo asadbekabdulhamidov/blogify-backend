@@ -1,22 +1,21 @@
 const router = require("express").Router();
-const Post = require("../models/Post");
+const store = require("../store");
 const { protect, adminOnly } = require("../middleware/auth");
 
-// GET /api/stats  — Admin Dashboard uchun (Total Posts, Total Views)
-router.get("/", protect, adminOnly, async (req, res) => {
-  const [totalPosts, published, drafts, viewsAgg, recentPosts] = await Promise.all([
-    Post.countDocuments(),
-    Post.countDocuments({ status: "Published" }),
-    Post.countDocuments({ status: "Draft" }),
-    Post.aggregate([{ $group: { _id: null, total: { $sum: "$views" } } }]),
-    Post.find().sort({ createdAt: -1 }).limit(5).select("title category status views createdAt"),
-  ]);
+// GET /api/stats  — Admin Dashboard uchun
+router.get("/", protect, adminOnly, (req, res) => {
+  const posts = store.getAll();
+
+  const recentPosts = [...posts]
+    .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+    .slice(0, 5)
+    .map(({ id, title, category, status, views, createdAt }) => ({ id, title, category, status, views, createdAt }));
 
   res.json({
-    totalPosts,
-    published,
-    drafts,
-    totalViews: viewsAgg[0]?.total || 0,
+    totalPosts: posts.length,
+    published: posts.filter((p) => p.status === "Published").length,
+    drafts: posts.filter((p) => p.status === "Draft").length,
+    totalViews: posts.reduce((sum, p) => sum + p.views, 0),
     recentPosts,
   });
 });

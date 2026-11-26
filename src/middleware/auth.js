@@ -1,4 +1,5 @@
 const jwt = require("jsonwebtoken");
+const { JWT_SECRET } = require("../config");
 
 // Token tekshiradi: "Authorization: Bearer <token>"
 function protect(req, res, next) {
@@ -7,7 +8,7 @@ function protect(req, res, next) {
   if (!token) return res.status(401).json({ message: "Avval login qiling" });
 
   try {
-    req.user = jwt.verify(token, process.env.JWT_SECRET); // { id, role }
+    req.user = jwt.verify(token, JWT_SECRET); // { login, role }
     next();
   } catch {
     res.status(401).json({ message: "Token noto'g'ri yoki muddati o'tgan" });
@@ -25,7 +26,7 @@ function optionalAuth(req, res, next) {
   const header = req.headers.authorization || "";
   if (header.startsWith("Bearer ")) {
     try {
-      req.user = jwt.verify(header.slice(7), process.env.JWT_SECRET);
+      req.user = jwt.verify(header.slice(7), JWT_SECRET);
     } catch {}
   }
   next();

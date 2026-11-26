@@ -16,7 +16,7 @@ const postBody = {
 const Post = {
   type: "object",
   properties: {
-    _id: { type: "string" },
+    id: { type: "string", example: "1" },
     ...postBody.properties,
     views: { type: "number" },
     author: { type: "string", example: "Admin" },

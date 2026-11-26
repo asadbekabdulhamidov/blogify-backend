@@ -1,7 +1,7 @@
 # Blogify Backend
 
 Figma dizayndagi Blogify sayti uchun oddiy backend.
-**Express + MongoDB (Mongoose) + JWT**. Vercel'ga to'g'ridan-to'g'ri deploy qilinadi.
+**Express + JSON fayl + JWT**. Baza (MongoDB) kerak emas, Vercel'ga hech qanday sozlamasiz deploy qilinadi.
 
 ## Papkalar tuzilishi
 
@@ -9,80 +9,83 @@ Figma dizayndagi Blogify sayti uchun oddiy backend.
 blogify-back/
 ├── api/index.js          ← Vercel shu faylni ishga tushiradi
 ├── server.js             ← kompyuterda ishga tushirish uchun
-├── seed.js               ← namunaviy postlarni bazaga yozish
-├── data/posts.js         ← 20 ta namunaviy post
 ├── vercel.json
+├── data/posts.json       ← barcha postlar shu yerda (20 ta)
 └── src/
     ├── app.js            ← express ilova, barcha yo'llar shu yerda ulanadi
-    ├── db.js             ← MongoDB'ga ulanish
+    ├── config.js         ← admin login/parol, JWT kaliti
+    ├── store.js          ← posts.json ni o'qish va yozish
     ├── swagger.js        ← Swagger hujjati (/api/docs)
-    ├── middleware/auth.js← token tekshirish, admin tekshirish
-    ├── models/           ← Post
+    ├── middleware/auth.js← token tekshirish
     └── routes/           ← auth, posts, categories, stats
 ```
 
-## 1. Ishga tushirish (kompyuterda)
-
-1. [MongoDB Atlas](https://www.mongodb.com/atlas)'da bepul cluster oching va ulanish havolasini (connection string) oling.
-   *Network Access* bo'limida `0.0.0.0/0` ni qo'shing (Vercel ham ulana olishi uchun).
-2. `.env.example` faylidan nusxa olib, `.env` deb nomlang va qiymatlarni to'ldiring.
-3. Terminalda:
+## Ishga tushirish
 
 ```bash
 npm install
-npm run seed   # 20 ta namunaviy post
 npm run dev    # http://localhost:5000
 ```
 
-## 2. Vercel'ga deploy
+`.env` fayl ixtiyoriy. Berilmasa: login `admin`, parol `admin123`.
 
-1. Loyihani GitHub'ga yuklang (`.env` yuklanmaydi — `.gitignore`da bor).
-2. [vercel.com](https://vercel.com) → **Add New → Project** → repozitoriyni tanlang.
-3. **Environment Variables** bo'limiga `MONGODB_URI`, `JWT_SECRET`, `ADMIN_LOGIN`, `ADMIN_PASSWORD` ni qo'shing.
-4. **Deploy** tugmasini bosing. Tayyor: `https://sizning-loyiha.vercel.app/api/posts`
+## Vercel'ga deploy
+
+GitHub'ga push qiling → Vercel'da **Add New → Project** → repozitoriyni tanlang → **Deploy**. Tamom.
+
+Xohlasangiz **Settings → Environment Variables** ga `ADMIN_PASSWORD` va `JWT_SECRET` qo'yib, parolni o'zgartirishingiz mumkin (keyin **Redeploy**).
+
+## ⚠️ Muhim: Vercel'da ma'lumot saqlanishi
+
+- **Kompyuterda** post qo'shsangiz, tahrirlasangiz yoki o'chirsangiz — `data/posts.json` fayli o'zgaradi.
+- **Vercel'da** fayl yozib bo'lmaydi. Yangi/tahrirlangan postlar faqat server xotirasida turadi va
+  server qayta ishga tushganda (bir necha daqiqa so'rov bo'lmasa yoki qayta deploy qilinganda) **asl `posts.json` holatiga qaytadi**.
+
+O'quv loyihasi uchun bu yetarli: frontendda CRUD'ni sinab ko'rish mumkin.
+Doimiy postlar kerak bo'lsa, ularni `data/posts.json` ga qo'shib, GitHub'ga push qiling.
 
 ## API yo'llari
 
-📘 **Swagger:** server ishlayotganda brauzerda `/api/docs` ni oching (masalan `http://localhost:5000/api/docs`).
-U yerda har bir yo'lni sinab ko'rish mumkin. Token kerak bo'lsa, login qilib olingan tokenni **Authorize** tugmasiga yozing.
+📘 **Swagger:** brauzerda `/api/docs` ni oching (masalan `http://localhost:5000/api/docs`).
+Token kerak bo'lsa, login qilib olingan tokenni **Authorize** tugmasiga yozing.
 
-🔒 — token kerak (`Authorization: Bearer <token>`), 👑 — faqat admin
+🔒 — admin token kerak (`Authorization: Bearer <token>`)
 
 | Metod | Yo'l | Nima qiladi | Dizayndagi joyi |
 |---|---|---|---|
 | POST | `/api/auth/login` | Kirish `{login, password}` → `{ token }` | Login |
 | GET | `/api/posts` | Postlar ro'yxati | Home, Posts |
 | GET | `/api/posts/:id` | Bitta post + `related` (3 ta) | Post sahifasi |
-| POST | `/api/posts` 🔒👑 | Yangi post | Create Post |
-| PUT | `/api/posts/:id` 🔒👑 | Postni tahrirlash | Edit |
-| DELETE | `/api/posts/:id` 🔒👑 | Postni o'chirish | Delete |
+| POST | `/api/posts` 🔒 | Yangi post | Create Post |
+| PUT | `/api/posts/:id` 🔒 | Postni tahrirlash | Edit |
+| DELETE | `/api/posts/:id` 🔒 | Postni o'chirish | Delete |
 | GET | `/api/categories` | Kategoriyalar va soni | Categories tablari |
-| GET | `/api/stats` 🔒👑 | Total Posts, Total Views, Published/Draft | Admin Dashboard |
+| GET | `/api/stats` 🔒 | Total Posts, Total Views, Published/Draft | Admin Dashboard |
 
 **`/api/posts` parametrlari:** `?search=web&category=Design&page=1&limit=9`
 (`category=all` — hammasi). Admin token bilan so'rasa Draft postlar ham keladi (`?status=Draft`).
 
-**Post maydonlari:** `title`, `excerpt`, `content`, `category` (Technology | Productivity | Design),
-`image` (rasm URL), `status` (Published | Draft). `views` va sana (`createdAt`) avtomatik.
+**Post maydonlari:** `id`, `title`, `excerpt`, `content`, `category` (Technology | Productivity | Design),
+`image` (rasm URL), `status` (Published | Draft), `views`, `author`, `createdAt`, `updatedAt`.
 
-> 💡 Loyihada bitta admin bor. Login va parol `.env` dagi `ADMIN_LOGIN` / `ADMIN_PASSWORD` (berilmasa `admin` / `admin123`).
-> Ro'yxatdan o'tish yo'q. Logout uchun frontendda tokenni `localStorage`dan o'chirish kifoya.
-
-> 💡 Rasm: Vercel fayl saqlamaydi, shuning uchun `image` maydoniga tayyor rasm havolasi (URL) yoziladi.
-> Frontendda rasmni Cloudinary yoki ImgBB'ga yuklab, havolasini yuborish mumkin.
+> 💡 Logout uchun frontendda tokenni `localStorage`dan o'chirish kifoya.
 
 ## Frontenddan misol
 
 ```js
-const API = "https://sizning-loyiha.vercel.app";
+const API = "https://blogify-oquvchi.vercel.app";
+
+// Postlar
+const res = await fetch(`${API}/api/posts?category=Design`);
+const { posts } = await res.json();
 
 // Login
-const res = await fetch(`${API}/api/auth/login`, {
+const login = await fetch(`${API}/api/auth/login`, {
   method: "POST",
   headers: { "Content-Type": "application/json" },
   body: JSON.stringify({ login: "admin", password: "admin123" }),
 });
-const { token } = await res.json();
+const { token } = await login.json();
 localStorage.setItem("token", token);
 
 // Post yaratish
