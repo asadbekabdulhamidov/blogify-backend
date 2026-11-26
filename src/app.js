@@ -8,7 +8,10 @@ const app = express();
 app.use(cors());
 app.use(express.json({ limit: "5mb" }));
 
-app.get("/", (req, res) => res.json({ message: "Blogify API ishlayapti 🚀" }));
+app.get("/", (req, res) => res.json({ message: "Blogify API ishlayapti 🚀", docs: "/api/docs" }));
+
+// Swagger hujjati bazaga ulanmasdan ham ochiladi
+app.use("/api", require("./swagger"));
 
 // Har bir so'rovdan oldin bazaga ulanamiz
 app.use(async (req, res, next) => {

@@ -15,6 +15,7 @@ blogify-back/
 └── src/
     ├── app.js            ← express ilova, barcha yo'llar shu yerda ulanadi
     ├── db.js             ← MongoDB'ga ulanish
+    ├── swagger.js        ← Swagger hujjati (/api/docs)
     ├── middleware/auth.js← token tekshirish, admin tekshirish
     ├── models/           ← User, Post
     └── routes/           ← auth, posts, categories, stats
@@ -41,6 +42,9 @@ npm run dev    # http://localhost:5000
 4. **Deploy** tugmasini bosing. Tayyor: `https://sizning-loyiha.vercel.app/api/posts`
 
 ## API yo'llari
+
+📘 **Swagger:** server ishlayotganda brauzerda `/api/docs` ni oching (masalan `http://localhost:5000/api/docs`).
+U yerda har bir yo'lni sinab ko'rish mumkin. Token kerak bo'lsa, login qilib olingan tokenni **Authorize** tugmasiga yozing.
 
 🔒 — token kerak (`Authorization: Bearer <token>`), 👑 — faqat admin
 
