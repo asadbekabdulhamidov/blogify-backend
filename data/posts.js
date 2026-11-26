@@ -230,4 +230,218 @@ Use at least 16px for body text and a line height around 1.5 for easy reading.
 ## Conclusion
 Good typography makes content easy to read — and that is the main job of any website.`,
   },
+  {
+    title: "React Hooks Explained Simply",
+    excerpt: "useState, useEffect and custom hooks explained with simple examples for beginners.",
+    category: "Technology",
+    image: img(11),
+    views: 980,
+    createdAt: "2025-10-30",
+    content: `Hooks let you use state and other React features inside function components.
+
+## useState
+useState stores a value that can change, like a counter or the text in an input. When the value changes, React re-renders the component.
+
+## useEffect
+useEffect runs code after rendering — for example, loading data from an API or setting a timer.
+
+## Custom Hooks
+When you repeat the same logic in several components, move it into your own hook, like useFetch or useLocalStorage.
+
+## Conclusion
+Master useState and useEffect first. They cover most of what you need in everyday React work.`,
+  },
+  {
+    title: "REST API Design Best Practices",
+    excerpt: "How to design clean, predictable APIs that frontend developers will love to use.",
+    category: "Technology",
+    image: img(12),
+    views: 730,
+    createdAt: "2025-10-28",
+    content: `A good API is easy to understand without reading the documentation twice.
+
+## Use Nouns for Routes
+Use /posts and /posts/:id instead of /getPosts or /deletePost. The HTTP method already says what happens.
+
+## Use the Right Methods
+GET reads data, POST creates, PUT updates and DELETE removes. Keep it consistent across the whole API.
+
+## Return Clear Status Codes
+200 for success, 201 for created, 400 for bad input, 401 for not logged in, 404 for not found.
+
+## Document Everything
+Tools like Swagger let other developers try your API right in the browser.
+
+## Conclusion
+Predictable APIs save time for everyone on the team.`,
+  },
+  {
+    title: "CSS Flexbox vs Grid",
+    excerpt: "When to use Flexbox, when to use Grid, and how to combine them in real layouts.",
+    category: "Design",
+    image: img(13),
+    views: 610,
+    createdAt: "2025-10-26",
+    content: `Flexbox and Grid are both powerful, but they solve different problems.
+
+## Flexbox: One Direction
+Flexbox is perfect for laying items out in a row or a column — navigation bars, buttons, card content.
+
+## Grid: Two Directions
+Grid controls rows and columns at the same time. It is ideal for page layouts and card galleries.
+
+## Use Them Together
+A common pattern: Grid for the page structure, Flexbox inside each card.
+
+## Conclusion
+Don't choose one forever. Learn both and pick the right tool for each part of the page.`,
+  },
+  {
+    title: "Morning Routines of Successful People",
+    excerpt: "Simple morning habits that set the tone for a focused and productive day.",
+    category: "Productivity",
+    image: img(14),
+    views: 570,
+    createdAt: "2025-10-24",
+    content: `How you start your morning often decides how the whole day goes.
+
+## Wake Up at the Same Time
+A stable wake-up time keeps your energy steady during the week.
+
+## Move Your Body
+A short workout, a walk or a few minutes of stretching wakes up both body and mind.
+
+## Plan Before You Check Your Phone
+Spend five minutes writing down the three most important tasks of the day before opening social media.
+
+## Conclusion
+You don't need a perfect two-hour routine. Start with one small habit and keep it.`,
+  },
+  {
+    title: "UX Writing: Words That Guide Users",
+    excerpt: "Why button labels, error messages and hints matter as much as visual design.",
+    category: "Design",
+    image: img(15),
+    views: 440,
+    createdAt: "2025-10-22",
+    content: `Users read words before they notice colors and shapes.
+
+## Be Clear, Not Clever
+"Save changes" is better than "Let's go!". Users should know exactly what will happen.
+
+## Write Helpful Errors
+Instead of "Error 400", say "Please enter a valid email address".
+
+## Keep It Short
+Remove every word that does not help the user take the next step.
+
+## Conclusion
+Good UX writing makes an interface feel friendly and easy to use.`,
+  },
+  {
+    title: "JavaScript Async/Await in 5 Minutes",
+    excerpt: "Understand promises and async/await with simple, practical examples.",
+    category: "Technology",
+    image: img(16),
+    views: 890,
+    createdAt: "2025-10-20",
+    content: `Many things in JavaScript take time: loading data, reading files, waiting for a timer.
+
+## Promises
+A promise is a value that will be ready later. It can succeed (resolve) or fail (reject).
+
+## Async/Await
+The await keyword pauses a function until the promise is ready, so asynchronous code reads like normal code.
+
+## Handling Errors
+Wrap await calls in try/catch to handle failed requests gracefully.
+
+## Conclusion
+Once async/await clicks, working with APIs becomes much easier.`,
+  },
+  {
+    title: "How to Stop Procrastinating",
+    excerpt: "Practical tricks to start tasks you keep postponing — and actually finish them.",
+    category: "Productivity",
+    image: img(17),
+    views: 760,
+    createdAt: "2025-10-18",
+    content: `Procrastination is rarely about laziness. It is usually about a task feeling too big or unclear.
+
+## The Two-Minute Rule
+If something takes less than two minutes, do it now.
+
+## Make the First Step Tiny
+Instead of "build the website", start with "create the project folder".
+
+## Use a Timer
+Work for 25 minutes, then take a 5-minute break. Starting is easier when the end is visible.
+
+## Conclusion
+Action creates motivation, not the other way around. Start small and keep moving.`,
+  },
+  {
+    title: "Designing for Mobile First",
+    excerpt: "Why starting with the smallest screen leads to better designs on every device.",
+    category: "Design",
+    image: img(18),
+    views: 380,
+    createdAt: "2025-10-16",
+    content: `Most people visit websites from their phones. Designing for mobile first puts them at the center.
+
+## Focus on What Matters
+A small screen forces you to choose the most important content and remove the rest.
+
+## Make Touch Targets Big
+Buttons and links should be at least 44px tall so they are easy to tap.
+
+## Scale Up, Not Down
+Adding space and columns for larger screens is easier than squeezing a desktop design onto a phone.
+
+## Conclusion
+Mobile-first design leads to simpler, faster and more focused products.`,
+  },
+  {
+    title: "MongoDB for Beginners",
+    excerpt: "Documents, collections and queries — everything you need to start with MongoDB.",
+    category: "Technology",
+    image: img(19),
+    views: 520,
+    createdAt: "2025-10-14",
+    content: `MongoDB stores data as JSON-like documents, which feels natural for JavaScript developers.
+
+## Documents and Collections
+A document is one record, like a single blog post. A collection is a group of documents, like all posts.
+
+## Basic Queries
+find() reads documents, insertOne() adds a new one, updateOne() changes it and deleteOne() removes it.
+
+## Mongoose
+Mongoose adds schemas and validation on top of MongoDB, so your data always has the right shape.
+
+## Conclusion
+With MongoDB Atlas you can create a free database in minutes and connect it to your Node.js app.`,
+  },
+  {
+    title: "Building a Personal Brand as a Developer",
+    excerpt: "Share what you learn, build in public and let opportunities find you.",
+    category: "Productivity",
+    image: img(20),
+    status: "Draft",
+    views: 0,
+    createdAt: "2025-10-12",
+    content: `Your skills matter, but people also need to know about them.
+
+## Share What You Learn
+Write short posts or record videos about problems you solved this week. Teaching others helps you learn faster.
+
+## Build in Public
+Show your projects while you build them. Progress is more interesting than perfection.
+
+## Be Consistent
+One post every week for a year is better than ten posts in one week and then silence.
+
+## Conclusion
+A personal brand is simply your work, shared regularly with the right people.`,
+  },
 ];

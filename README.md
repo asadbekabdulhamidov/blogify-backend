@@ -10,7 +10,7 @@ blogify-back/
 ├── api/index.js          ← Vercel shu faylni ishga tushiradi
 ├── server.js             ← kompyuterda ishga tushirish uchun
 ├── seed.js               ← namunaviy postlarni bazaga yozish
-├── data/posts.js         ← 10 ta namunaviy post
+├── data/posts.js         ← 20 ta namunaviy post
 ├── vercel.json
 └── src/
     ├── app.js            ← express ilova, barcha yo'llar shu yerda ulanadi
@@ -30,7 +30,7 @@ blogify-back/
 
 ```bash
 npm install
-npm run seed   # 10 ta namunaviy post
+npm run seed   # 20 ta namunaviy post
 npm run dev    # http://localhost:5000
 ```
 
